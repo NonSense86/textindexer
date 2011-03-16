@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>at.tuwien.ir</groupId>
+  <artifactId>textindexer</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>textindexer</name>
+  <developers>
+  	<developer>
+	  <id>0426173</id>
+	  <name>Filip Hianik</name>
+	  <email>nonsense86@gmail.com</email>
+  	</developer>
+  	<developer>
+  	  <id>0508142</id>
+  	  <name>Petar Petrov</name>
+  	  <email>me@petarpetrov.org</email>
+  	</developer>
+  </developers>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+  	<dependency>
+  		<groupId>junit</groupId>
+  		<artifactId>junit</artifactId>
+  		<version>4.8.2</version>
+  		<scope>test</scope>
+  	</dependency>
+  </dependencies>
+</project>
