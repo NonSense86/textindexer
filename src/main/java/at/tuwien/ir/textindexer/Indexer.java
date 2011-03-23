@@ -1,6 +1,7 @@
 package at.tuwien.ir.textindexer;
 
 import at.tuwien.ir.textindexer.stemming.Stemmer;
+import at.tuwien.ir.textindexer.weighting.WeightingStrategy;
 
 public class Indexer {
 
