@@ -17,6 +17,13 @@ import org.slf4j.LoggerFactory;
 import at.tuwien.ir.textindexer.utils.IndexCount;
 import at.tuwien.ir.textindexer.utils.Utilities;
 
+/**
+ * The Mapper maps words to {@link IndexCount} objects as the intermediate
+ * result.
+ * 
+ * @author petar
+ * 
+ */
 public class IndexMapper extends MapReduceBase implements Mapper<LongWritable, Text, Text, IndexCount> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexMapper.class);
@@ -25,7 +32,7 @@ public class IndexMapper extends MapReduceBase implements Mapper<LongWritable, T
 
     private String inputFile;
 
-    //it is called by the framework everytime the file changes....
+    // it is called by the framework everytime the file changes....
     public void configure(JobConf conf) {
         File f = new File(conf.get("map.input.file"));
         this.inputFile = f.getParentFile().getName() + File.separator + f.getName();
@@ -40,7 +47,8 @@ public class IndexMapper extends MapReduceBase implements Mapper<LongWritable, T
         while (tokenizer.hasMoreTokens()) {
             String token = Utilities.removePunctuation(tokenizer.nextToken().toLowerCase());
 
-            // after removing punctuation it may be that a tokeb becomes two or more tokens
+            // after removing punctuation it may be that a tokeb becomes two or
+            // more tokens
             // so further splitting is necessary...
             // if not just proceed...
             if (token.contains(" ")) {

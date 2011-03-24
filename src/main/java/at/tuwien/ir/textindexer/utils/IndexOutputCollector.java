@@ -5,8 +5,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.hadoop.io.Text;
-
+/**
+ * A singleton that collects the results of the map reduce procedure.
+ * @author petar
+ *
+ */
 public class IndexOutputCollector {
 
     private static IndexOutputCollector uniqueInstance;

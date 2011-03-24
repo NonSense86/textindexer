@@ -12,6 +12,12 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 
+/**
+ * A helper object for the values in the intermediate Output of the map reduce procedure.
+ * It does some friggin serializing because of hadoop.
+ * @author petar
+ *
+ */
 public class IndexCount implements Writable {
 
 

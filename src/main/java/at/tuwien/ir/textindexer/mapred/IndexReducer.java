@@ -16,6 +16,13 @@ import org.slf4j.LoggerFactory;
 import at.tuwien.ir.textindexer.utils.IndexCount;
 import at.tuwien.ir.textindexer.utils.IndexOutputCollector;
 
+/**
+ * Reduces the intermediate key value pairs by merging them.
+ * For now the class writes the output to a file and stores
+ * the output in memory for further processing.
+ * @author petar
+ *
+ */
 public class IndexReducer extends MapReduceBase implements Reducer<Text, IndexCount, Text, IndexCount> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexReducer.class);

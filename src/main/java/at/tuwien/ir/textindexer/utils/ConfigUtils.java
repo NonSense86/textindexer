@@ -9,6 +9,12 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Offers some helper methods for property reading and loads the config file
+ * provided or the default config if no config is provided...
+ * @author petar
+ *
+ */
 public final class ConfigUtils {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigUtils.class);

@@ -13,54 +13,69 @@ import at.tuwien.ir.textindexer.weighting.InverseDocumentFrequencyWeightingStrat
 import at.tuwien.ir.textindexer.weighting.TermFrequencyWeightingStrategy;
 import at.tuwien.ir.textindexer.weighting.WeightingStrategy;
 
+/**
+ * Application Main Class.
+ * 
+ * @author petar
+ * 
+ */
 public class App {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
-    
+
+    /**
+     * Entry point for the program. Based on the input it loads the specified
+     * config or the default config and starts indexing the documents in the
+     * specified root folder.
+     * 
+     * @param args
+     */
     public static void main(String[] args) {
-        App.LOGGER.info("Starting at: {}", new Date()); 
-        
+        App.LOGGER.info("Starting at: {}", new Date());
+
         String dir = null;
         if (args.length > 1) {
             App.LOGGER.info("Starting application with specific configuration");
             ConfigUtils.loadConfig(args[0]);
             dir = args[1];
-        } else if (args.length == 1){
+        } else if (args.length == 1) {
             App.LOGGER.info("Starting application with default configuration");
             ConfigUtils.loadDefaultConfig();
             dir = args[0];
         } else {
             App.LOGGER.error("No arguments provided. Please provide at least one input folder.");
+            App.LOGGER.error("Usage: java -jar bowindexer.jar [config] [dir], "
+                    + "where config is the path to the config.properties "
+                    + "file and dir is the root folder of the documents.");
             System.exit(1);
         }
-        
+
         Indexer idx = new Indexer();
         idx.start(dir);
-        
-        //won't be necessary in the end 
+
+        // won't be necessary in the end
         Utilities.mergeOutput();
-        //System.out.println(IndexOutputCollector.getInstance().getOutputMap().size());
-        
-        
-        //TODO filter and calculate weight...
+        // System.out.println(IndexOutputCollector.getInstance().getOutputMap().size());
+
+        // TODO filter and calculate weight...
         // In the end there has to be one file with all features
         // and two files with filtered features.
         // the filtering is based on the predefined thresholds...
         String weightingType = ConfigUtils.getProperty(Constants.WEIGHTING);
-        
+
         WeightingStrategy ws;
         if (weightingType.equals("tf")) {
             ws = new TermFrequencyWeightingStrategy();
         } else if (weightingType.equals("idf")) {
             ws = new InverseDocumentFrequencyWeightingStrategy();
         } else {
-            //no matter what else is set.. load the default...
+            // no matter what else is set.. load the default...
             ws = new BooleanWeightingStrategy();
         }
-        
+
         OutputGenerator generator = new OutputGenerator(ws);
         generator.generateOutput(ConfigUtils.getProperty(Constants.OUTPUT_PATH));
-        
+
         App.LOGGER.info("Terminating at: {}", new Date());
     }
 }

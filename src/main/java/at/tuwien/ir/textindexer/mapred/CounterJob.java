@@ -21,10 +21,21 @@ import at.tuwien.ir.textindexer.common.Constants;
 import at.tuwien.ir.textindexer.utils.IndexCount;
 import at.tuwien.ir.textindexer.weighting.BooleanWeightingStrategy;
 
+/**
+ * The Map/Reduce counting job.
+ * 
+ * @author petar
+ * 
+ */
 public class CounterJob {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CounterJob.class);
 
+    /**
+     * Configures the job and runs it.
+     * 
+     * @param dir
+     */
     public void doJob(String dir) {
         JobConf conf = new JobConf(CounterJob.class);
         conf.setJobName("wordcount");
@@ -42,7 +53,7 @@ public class CounterJob {
         this.addPaths(new File(dir), p);
         Path[] paths = new Path[p.size()];
         for (int i = 0; i < p.size(); i++) {
-            //System.out.println(p.get(i).getName());
+            // System.out.println(p.get(i).getName());
             paths[i] = p.get(i);
         }
 
@@ -51,12 +62,20 @@ public class CounterJob {
 
         try {
             RunningJob job = JobClient.runJob(conf);
-            
+
         } catch (IOException e) {
             LOGGER.error("An error occurred: {}", e.getMessage());
         }
     }
-    
+
+    /**
+     * Scans the given directory recursively and adds new {@link Path} objects
+     * to the provided list. This list is used afterwards for the job
+     * configuration.
+     * 
+     * @param dir
+     * @param paths
+     */
     private void addPaths(File dir, List<Path> paths) {
         if (dir.exists()) {
             final File[] files = dir.listFiles();

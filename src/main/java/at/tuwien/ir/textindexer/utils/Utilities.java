@@ -6,8 +6,19 @@ import java.util.Date;
 
 import at.tuwien.ir.textindexer.common.Constants;
 
+/**
+ * Offers some utility methods to help other tasks.
+ * 
+ * @author petar
+ * 
+ */
 public final class Utilities {
 
+    /**
+     * Moves the output of the current map reduce task to a specified output
+     * folder. This allows a subsequent map reduce procedure without deleting
+     * the results of the previous.
+     */
     public static void mergeOutput() {
         final File tmp = new File(Constants.TMP_OUTPUT_PATH);
         final File finalOutputDir = new File(ConfigUtils.getProperty(Constants.OUTPUT_PATH));
@@ -29,11 +40,23 @@ public final class Utilities {
             tmp.delete();
         }
     }
-    
+
+    /**
+     * Checks if a word is a stop word.
+     * 
+     * @param word
+     * @return
+     */
     public static boolean isStopWord(String word) {
         return Constants.STOP_WORDS.contains(word);
     }
-    
+
+    /**
+     * Removes certain characters and trailing and heading spaces of words.
+     * 
+     * @param word
+     * @return
+     */
     public static String removePunctuation(String word) {
         String result = "";
         for (int i = 0; i < word.length(); i++) {
@@ -44,23 +67,23 @@ public final class Utilities {
                 result += " ";
             }
         }
-    
+
         return removeTrailingSpaces(removeHeadingSpaces(result));
     }
-    
+
     private static String removeTrailingSpaces(String word) {
         while (word.endsWith(" ")) {
             word = word.substring(0, word.lastIndexOf(" "));
         }
-        
+
         return word;
     }
-    
+
     private static String removeHeadingSpaces(String word) {
         while (word.startsWith(" ")) {
             word = word.substring(1);
         }
-        
+
         return word;
     }
 
