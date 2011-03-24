@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import at.tuwien.ir.textindexer.common.Constants;
 import at.tuwien.ir.textindexer.utils.IndexCount;
+import at.tuwien.ir.textindexer.weighting.BooleanWeightingStrategy;
 
 public class CounterJob {
     
@@ -35,7 +36,7 @@ public class CounterJob {
         conf.setReducerClass(IndexReducer.class);
 
         conf.setInputFormat(TextInputFormat.class);
-        //conf.setOutputFormat(TextOutputFormat.class);
+        conf.setOutputFormat(TextOutputFormat.class);
 
         List<Path> p = new ArrayList<Path>();
         this.addPaths(new File(dir), p);
@@ -50,16 +51,9 @@ public class CounterJob {
 
         try {
             RunningJob job = JobClient.runJob(conf);
-            while (!job.isComplete()) {
-                System.out.println(job.mapProgress());
-                System.out.println(job.reduceProgress());
-                
-                Thread.sleep(5000);
-            }
+            
         } catch (IOException e) {
             LOGGER.error("An error occurred: {}", e.getMessage());
-        } catch (InterruptedException e) {
-            LOGGER.warn(e.getMessage());
         }
     }
     

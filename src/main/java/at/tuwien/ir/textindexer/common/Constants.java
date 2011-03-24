@@ -13,7 +13,7 @@ public final class Constants {
         STOP_WORDS = Arrays.asList(STOP_WORDS_ARRAY);
     }
     
-    public static final String PUNCTUATION = ",<.>/?;:'\"[{]}\\|`~!@#$%^&*()_+-=0123456789";
+    public static final String PUNCTUATION = "\t\n\r\f,.<>/?;:'\"[] {}\\|`~!@#$%^&*()_+-=0123456789";
     // \t\n\r\f,:#[]*/\".-?!0123456789@$%()=;'
     
     public static final String WEIGHTING = "at.tuwien.ir.textindexer.weighting";

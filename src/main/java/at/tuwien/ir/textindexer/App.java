@@ -1,11 +1,12 @@
 package at.tuwien.ir.textindexer;
 
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.tuwien.ir.textindexer.common.Constants;
 import at.tuwien.ir.textindexer.utils.ConfigUtils;
-import at.tuwien.ir.textindexer.utils.IndexOutputCollector;
 import at.tuwien.ir.textindexer.utils.Utilities;
 import at.tuwien.ir.textindexer.weighting.BooleanWeightingStrategy;
 import at.tuwien.ir.textindexer.weighting.InverseDocumentFrequencyWeightingStrategy;
@@ -17,6 +18,8 @@ public class App {
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
     
     public static void main(String[] args) {
+        App.LOGGER.info("Starting at: {}", new Date()); 
+        
         String dir = null;
         if (args.length > 1) {
             App.LOGGER.info("Starting application with specific configuration");
@@ -58,5 +61,6 @@ public class App {
         OutputGenerator generator = new OutputGenerator(ws);
         generator.generateOutput(ConfigUtils.getProperty(Constants.OUTPUT_PATH));
         
+        App.LOGGER.info("Terminating at: {}", new Date());
     }
 }
