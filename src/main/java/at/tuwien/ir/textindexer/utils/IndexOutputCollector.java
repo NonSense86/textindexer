@@ -1,7 +1,9 @@
 package at.tuwien.ir.textindexer.utils;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.hadoop.io.Text;
 
@@ -10,6 +12,8 @@ public class IndexOutputCollector {
     private static IndexOutputCollector uniqueInstance;
     
     private Map<String, IndexCount> outputMap;
+    
+    private Set<String> inputFiles;
     
     public static synchronized IndexOutputCollector getInstance() {
         if (IndexOutputCollector.uniqueInstance == null) {
@@ -24,23 +28,29 @@ public class IndexOutputCollector {
         throw new CloneNotSupportedException("Cannot clone a singleton instance");
     }
     
-    public void addResult(String doc, IndexCount count) {
-        IndexCount ic = this.outputMap.get(doc);
-        if (ic == null) {
+    public synchronized void addResult(String doc, IndexCount count) {
+//        if (ic == null) {
+//            IndexCount c = new IndexCount();
+//            c.setTermFrequency(count.getTermFrequency());
             this.outputMap.put(doc, count);
-        } else {
-            ic.incrDocFrequency(count.getDocFrequency());
-            for (Text t : count.getTermFrequency().keySet()) {
-                ic.incrTermFrequency(t.toString(), count.getTermFrequency().get(t).get());
-            }
-        }
+//        } else {
+//            for (Text t : count.getTermFrequency().keySet()) {
+//                ic.incrTermFrequency(t.toString(), count.getTermFrequency().get(t).get());
+//            }
+//        }
     }
     
-    public Map<String, IndexCount> getOutputMap() {
+    public synchronized Map<String, IndexCount> getOutputMap() {
         return outputMap;
+    }
+
+    public Set<String> getInputFiles() {
+        return inputFiles;
     }
 
     private IndexOutputCollector() {
         this.outputMap = new HashMap<String, IndexCount>();
+        this.inputFiles = new HashSet<String>();
     }
+
 }

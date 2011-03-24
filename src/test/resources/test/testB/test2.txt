@@ -1,0 +1,2 @@
+Reduce Reduce Hello, Bar.
+Foo bar hello reduce.

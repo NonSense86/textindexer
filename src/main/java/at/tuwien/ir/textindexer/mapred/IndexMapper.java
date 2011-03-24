@@ -61,7 +61,6 @@ public class IndexMapper extends MapReduceBase implements Mapper<LongWritable, T
         if (!Utilities.isStopWord(token)) {
             word.set(token);
             IndexCount ic = new IndexCount();
-            ic.incrDocFrequency(1);
             ic.incrTermFrequency(this.inputFile, 1);
             output.collect(word, ic);
         }

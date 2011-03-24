@@ -12,26 +12,23 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 
-
 public class IndexCount implements Writable {
 
-    private int docFrequency;
-    
+
+    /**
+     * The key is the name of the document The value is the number of times a
+     * word is associated with this document.
+     */
     private Map<Text, IntWritable> termFrequency;
-    
+
     public IndexCount() {
-        this.docFrequency = 0;
         this.setTermFrequency(new HashMap<Text, IntWritable>());
     }
-    
-    public void incrDocFrequency(int incr) {
-        this.docFrequency += incr;
-    }
-    
+
     public void incrTermFrequency(String doc, int incr) {
         Text t = new Text(doc);
         IntWritable tf = this.termFrequency.get(t);
-        
+
         if (tf == null) {
             this.termFrequency.put(t, new IntWritable(incr));
         } else {
@@ -39,12 +36,8 @@ public class IndexCount implements Writable {
         }
     }
 
-    public void setDocFrequency(int docFrequency) {
-        this.docFrequency = docFrequency;
-    }
-
     public int getDocFrequency() {
-        return docFrequency;
+        return this.termFrequency.keySet().size();
     }
 
     public void setTermFrequency(Map<Text, IntWritable> termFrequency) {
@@ -56,14 +49,10 @@ public class IndexCount implements Writable {
     }
 
     public void readFields(DataInput in) throws IOException {
-        this.docFrequency = in.readInt();
-        
-        this.termFrequency.clear();
+        this.termFrequency = new HashMap<Text, IntWritable>();
 
         int numEntries = in.readInt();
-        if (numEntries == 0)
-            return;
-
+            
         String keyClassName = in.readUTF();
         String valueClassName = in.readUTF();
 
@@ -87,19 +76,17 @@ public class IndexCount implements Writable {
         } catch (InstantiationException e) {
             e.printStackTrace();
         }
-        
-        
+
     }
 
     public void write(DataOutput out) throws IOException {
-        out.writeInt(this.docFrequency);
-
         out.writeInt(this.termFrequency.size());
         if (this.termFrequency.size() == 0) {
             return;
         }
 
-        // Write out the class names for keys and values assuming that all entries have the same type.
+        // Write out the class names for keys and values assuming that all
+        // entries have the same type.
         Set<Entry<Text, IntWritable>> entries = this.termFrequency.entrySet();
         Map.Entry<Text, IntWritable> first = entries.iterator().next();
         Text objK = first.getKey();
@@ -114,10 +101,9 @@ public class IndexCount implements Writable {
         }
 
     }
-    
+
     public String toString() {
-        return this.docFrequency + " " + this.termFrequency.toString();
+        return this.getDocFrequency() + " " + this.termFrequency.toString();
     }
-    
-    
+
 }
