@@ -15,14 +15,6 @@ public final class ConfigUtils {
     
     private static final String DEFAULT_CONFIG = "default_config.properties";
     
-    public static final String WEIGHTING = "at.tuwien.ir.textindexer.weighting";
-    
-    public static final String LOW_FREQ_THRESHOLD = "at.tuwien.ir.textindexer.frequency.threshold.low";
-    
-    public static final String HIGH_FREQ_THRESHOLD = "at.tuwien.ir.textindexer.frequency.threshold.high";
-    
-    public static final String STEMMING = "at.tuwien.ir.textindexer.stemming";
-    
     private static Properties defaultConfig = null;
     
     private static Properties config = null;

@@ -1,11 +1,14 @@
 package at.tuwien.ir.textindexer;
 
+import at.tuwien.ir.textindexer.mapred.CounterJob;
 import at.tuwien.ir.textindexer.stemming.Stemmer;
 import at.tuwien.ir.textindexer.weighting.WeightingStrategy;
 
 public class Indexer {
 
     private WeightingStrategy strategy;
+    
+    private CounterJob countJob;
     
     private OutputGenerator outputGenerator;
     
@@ -15,6 +18,7 @@ public class Indexer {
     
     public Indexer() {
         this.stemmer = new Stemmer();
+        this.countJob = new CounterJob();
     }
     
     public Indexer(WeightingStrategy strategy) {
@@ -39,7 +43,8 @@ public class Indexer {
         if (this.isStem()) {
             //TODO stem;
         }
-        this.strategy.index(dir);
+        //this.strategy.index(dir);
+        this.countJob.doJob(dir);
     }
 
     public void setStem(boolean stem) {

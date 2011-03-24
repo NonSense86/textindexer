@@ -7,6 +7,9 @@
 			<param name="ConversionPattern" value="%d{HH:mm:ss,SSS} %-5p [%c{1}] %m%n" />
 		</layout>
 	</appender>
+	<logger name="org.apache.hadoop">
+        <level value="WARN" />
+    </logger>
 	<root>
 		<priority value="DEBUG" />
 		<appender-ref ref="CONSOLE" />
