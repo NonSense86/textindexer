@@ -33,7 +33,7 @@ public final class Utilities {
                 if (f.getName().startsWith(".")) {
                     f.delete();
                 } else {
-                    f.renameTo(new File(finalOutputDir, "results_" + df.format(new Date())));
+                    f.renameTo(new File(finalOutputDir, "results_" + df.format(new Date()) + ".txt"));
                 }
             }
 

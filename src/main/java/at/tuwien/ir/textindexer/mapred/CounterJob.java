@@ -53,18 +53,23 @@ public class CounterJob {
         this.addPaths(new File(dir), p);
         Path[] paths = new Path[p.size()];
         for (int i = 0; i < p.size(); i++) {
-            // System.out.println(p.get(i).getName());
             paths[i] = p.get(i);
         }
 
-        FileInputFormat.setInputPaths(conf, paths);
-        FileOutputFormat.setOutputPath(conf, new Path(Constants.TMP_OUTPUT_PATH));
+        if (paths.length > 0) {
 
-        try {
-            RunningJob job = JobClient.runJob(conf);
+            FileInputFormat.setInputPaths(conf, paths);
+            FileOutputFormat.setOutputPath(conf, new Path(Constants.TMP_OUTPUT_PATH));
 
-        } catch (IOException e) {
-            LOGGER.error("An error occurred: {}", e.getMessage());
+            try {
+                RunningJob job = JobClient.runJob(conf);
+
+            } catch (IOException e) {
+                LOGGER.error("An error occurred: {}", e.getMessage());
+            }
+        } else {
+            LOGGER.error("No Documents found in the specified path {}. Program will exit now...", dir);
+            System.exit(1);
         }
     }
 
@@ -77,7 +82,7 @@ public class CounterJob {
      * @param paths
      */
     private void addPaths(File dir, List<Path> paths) {
-        if (dir.exists()) {
+        if (dir.exists() && dir.isDirectory()) {
             final File[] files = dir.listFiles();
             for (final File f : files) {
                 if (f.isDirectory()) {
