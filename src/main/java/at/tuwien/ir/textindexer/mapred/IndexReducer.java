@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.tuwien.ir.textindexer.utils.IndexCount;
+import at.tuwien.ir.textindexer.utils.IndexOutputCollector;
 
 public class IndexReducer extends MapReduceBase implements Reducer<Text, IndexCount, Text, IndexCount> {
 
@@ -27,11 +28,15 @@ public class IndexReducer extends MapReduceBase implements Reducer<Text, IndexCo
             IndexCount c = values.next();
             df += c.getDocFrequency();
             for (Text doc : c.getTermFrequency().keySet()) {
-                result.incrTermFrequency(doc, c.getTermFrequency().get(doc));
+                result.incrTermFrequency(doc.toString(), c.getTermFrequency().get(doc).get());
             }
         }
 
         result.incrDocFrequency(df);
+
+        IndexOutputCollector.getInstance().addResult(key.toString(), result);
+        // the next line is unnecessary. if omitted no file output is done but that
+        // is ok as the output is collected in memory for further processing...
         output.collect(key, result);
 
     }

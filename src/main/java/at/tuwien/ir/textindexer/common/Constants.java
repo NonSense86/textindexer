@@ -5,7 +5,7 @@ import java.util.List;
 
 public final class Constants {
 
-    private static final String[] STOP_WORDS_ARRAY = {"a", "about", "above", "across", "after", "again", "because", "become", "becomes", "been", "before", "he", "her", "here", "herself", "high", "higher", "through", "thus", "to", "yet", "you", "young", "younger", "youngest", "your", "yours"};
+    private static final String[] STOP_WORDS_ARRAY = {"", "a", "about", "above", "across", "after", "again", "because", "become", "becomes", "been", "before", "he", "her", "here", "herself", "high", "higher", "through", "thus", "to", "yet", "you", "young", "younger", "youngest", "your", "yours"};
     
     public static List<String> STOP_WORDS;
     
@@ -13,7 +13,8 @@ public final class Constants {
         STOP_WORDS = Arrays.asList(STOP_WORDS_ARRAY);
     }
     
-    public static final String PUNCTUATION = ",<.>/?;:'\"[{]}\\|`~!@#$%^&*()_+-=";
+    public static final String PUNCTUATION = ",<.>/?;:'\"[{]}\\|`~!@#$%^&*()_+-=0123456789";
+    // \t\n\r\f,:#[]*/\".-?!0123456789@$%()=;'
     
     public static final String WEIGHTING = "at.tuwien.ir.textindexer.weighting";
     

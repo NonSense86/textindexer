@@ -7,8 +7,10 @@ public class BooleanWeightingStrategy implements WeightingStrategy {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BooleanWeightingStrategy.class);
 
-    public void index(String dir) {
-
-       
+    public void generateOutput(String dir) {
+        // TODO Auto-generated method stub
+        
     }
+
+
 }

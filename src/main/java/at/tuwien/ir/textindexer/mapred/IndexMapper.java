@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.JobConf;
@@ -22,12 +21,11 @@ public class IndexMapper extends MapReduceBase implements Mapper<LongWritable, T
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexMapper.class);
 
-    private static final IntWritable one = new IntWritable(1);
-
     private Text word = new Text();
 
     private String inputFile;
 
+    //it is called by the framework everytime the file changes....
     public void configure(JobConf conf) {
         File f = new File(conf.get("map.input.file"));
         this.inputFile = f.getParentFile().getName() + File.separator + f.getName();
@@ -42,16 +40,31 @@ public class IndexMapper extends MapReduceBase implements Mapper<LongWritable, T
         while (tokenizer.hasMoreTokens()) {
             String token = Utilities.removePunctuation(tokenizer.nextToken().toLowerCase());
 
-            if (!Utilities.isStopWord(token)) {
-                word.set(token);
-                IndexCount ic = new IndexCount();
-                ic.incrDocFrequency(1);
-                ic.incrTermFrequency(new Text(this.inputFile), one);
-                output.collect(word, ic);
+            // after removing punctuation it may be that a tokeb becomes two or more tokens
+            // so further splitting is necessary...
+            // if not just proceed...
+            if (token.contains(" ")) {
+                StringTokenizer tknzr = new StringTokenizer(token);
+                while (tknzr.hasMoreTokens()) {
+                    String tkn = tknzr.nextToken();
+                    this.collect(tkn, output);
+                }
+            } else {
+                this.collect(token, output);
             }
 
         }
 
+    }
+
+    private void collect(String token, OutputCollector<Text, IndexCount> output) throws IOException {
+        if (!Utilities.isStopWord(token)) {
+            word.set(token);
+            IndexCount ic = new IndexCount();
+            ic.incrDocFrequency(1);
+            ic.incrTermFrequency(this.inputFile, 1);
+            output.collect(word, ic);
+        }
     }
 
 }

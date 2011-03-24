@@ -35,7 +35,7 @@ public class CounterJob {
         conf.setReducerClass(IndexReducer.class);
 
         conf.setInputFormat(TextInputFormat.class);
-        conf.setOutputFormat(TextOutputFormat.class);
+        //conf.setOutputFormat(TextOutputFormat.class);
 
         List<Path> p = new ArrayList<Path>();
         this.addPaths(new File(dir), p);

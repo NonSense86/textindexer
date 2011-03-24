@@ -28,13 +28,14 @@ public class IndexCount implements Writable {
         this.docFrequency += incr;
     }
     
-    public void incrTermFrequency(Text t, IntWritable incr) {
+    public void incrTermFrequency(String doc, int incr) {
+        Text t = new Text(doc);
         IntWritable tf = this.termFrequency.get(t);
         
         if (tf == null) {
-            this.termFrequency.put(t, incr);
+            this.termFrequency.put(t, new IntWritable(incr));
         } else {
-            this.termFrequency.put(t, new IntWritable(tf.get() + incr.get()));
+            this.termFrequency.put(t, new IntWritable(tf.get() + incr));
         }
     }
 

@@ -40,12 +40,29 @@ public final class Utilities {
             char c = word.charAt(i);
             if (Constants.PUNCTUATION.indexOf(c) == -1) {
                 result += c;
+            } else {
+                result += " ";
             }
         }
     
-        return result;
+        return removeTrailingSpaces(removeHeadingSpaces(result));
     }
     
+    private static String removeTrailingSpaces(String word) {
+        while (word.endsWith(" ")) {
+            word = word.substring(0, word.lastIndexOf(" "));
+        }
+        
+        return word;
+    }
+    
+    private static String removeHeadingSpaces(String word) {
+        while (word.startsWith(" ")) {
+            word = word.substring(1);
+        }
+        
+        return word;
+    }
 
     private Utilities() {
 
