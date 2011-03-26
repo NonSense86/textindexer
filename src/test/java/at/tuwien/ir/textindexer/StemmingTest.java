@@ -25,6 +25,7 @@ public class StemmingTest {
     
     @After
     public void teardown() {
+        TestUtilities.deleteFolder(new File(Constants.TMP_OUTPUT_PATH));
         IndexOutputCollector.getInstance().getOutputMap().clear();
     }
     
