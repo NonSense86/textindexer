@@ -5,6 +5,7 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,14 +23,19 @@ public class StemmingTest {
         TestUtilities.deleteFolder(new File(Constants.TMP_OUTPUT_PATH));
     }
     
+    @After
+    public void teardown() {
+        IndexOutputCollector.getInstance().getOutputMap().clear();
+    }
+    
     @Test
     public void shallStem() throws Exception {
         ConfigUtils.loadConfig(new File("src/test/resources/test_config.properties"));
         CounterJob cj = new CounterJob();
-        cj.doJob("src/test/resources/testStem");
+        cj.doJob("src/test/resources/testStem/");
         
         Map<String, IndexCount> map = IndexOutputCollector.getInstance().getOutputMap();
-        
+
         Assert.assertEquals(11, map.keySet().size());
         
         Assert.assertTrue(map.containsKey("stem"));

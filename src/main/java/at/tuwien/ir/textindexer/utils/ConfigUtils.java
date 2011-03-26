@@ -85,6 +85,11 @@ public final class ConfigUtils {
         }
     }
     
+    public static void unloadConfig() {
+        ConfigUtils.config = null;
+        //ConfigUtils.defaultConfig = null;
+    }
+    
     private ConfigUtils() {
         
     }

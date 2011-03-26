@@ -2,6 +2,7 @@ package at.tuwien.ir.textindexer.utils;
 
 import java.io.File;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import at.tuwien.ir.textindexer.common.Constants;
@@ -9,6 +10,11 @@ import at.tuwien.ir.textindexer.common.Constants;
 import junit.framework.Assert;
 
 public class ConfigUtilsTest {
+    
+    @Before
+    public void setup() {
+        ConfigUtils.unloadConfig();
+    }
     
     @Test
     public void shallLoadDefaultConfig() throws Exception {
@@ -37,7 +43,7 @@ public class ConfigUtilsTest {
         ConfigUtils.loadConfig(new File("src/test/resources/test_config.properties"));
         String freq_high = ConfigUtils.getProperty(Constants.HIGH_FREQ_THRESHOLD);
         Assert.assertNotNull(freq_high);
-        Assert.assertEquals(10, Integer.parseInt(freq_high));
+        Assert.assertEquals(90, Integer.parseInt(freq_high));
     }
     
     @Test
