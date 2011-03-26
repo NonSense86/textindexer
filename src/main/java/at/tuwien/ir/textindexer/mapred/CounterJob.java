@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.tuwien.ir.textindexer.common.Constants;
+import at.tuwien.ir.textindexer.utils.ConfigUtils;
 import at.tuwien.ir.textindexer.utils.IndexCount;
 import at.tuwien.ir.textindexer.weighting.BooleanWeightingStrategy;
 
@@ -30,6 +31,8 @@ import at.tuwien.ir.textindexer.weighting.BooleanWeightingStrategy;
 public class CounterJob {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CounterJob.class);
+    
+    
 
     /**
      * Configures the job and runs it.
@@ -48,7 +51,8 @@ public class CounterJob {
 
         conf.setInputFormat(TextInputFormat.class);
         conf.setOutputFormat(TextOutputFormat.class);
-
+        conf.set(Constants.STEMMING, ConfigUtils.getProperty(Constants.STEMMING));
+        
         List<Path> p = new ArrayList<Path>();
         this.addPaths(new File(dir), p);
         Path[] paths = new Path[p.size()];

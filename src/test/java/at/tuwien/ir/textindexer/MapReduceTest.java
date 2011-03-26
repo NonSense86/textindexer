@@ -13,30 +13,16 @@ import at.tuwien.ir.textindexer.common.Constants;
 import at.tuwien.ir.textindexer.mapred.CounterJob;
 import at.tuwien.ir.textindexer.utils.IndexCount;
 import at.tuwien.ir.textindexer.utils.IndexOutputCollector;
+import at.tuwien.ir.textindexer.utils.TestUtilities;
 
 public class MapReduceTest {
 
 
     @Before
     public void setup() {
-        this.deleteFolder(new File(Constants.TMP_OUTPUT_PATH));
+        TestUtilities.deleteFolder(new File(Constants.TMP_OUTPUT_PATH));
     }
     
-    private boolean deleteFolder(final File path) {
-        if (path.exists()) {
-            final File[] files = path.listFiles();
-            for (final File f : files) {
-                if (f.isDirectory()) {
-                    this.deleteFolder(f);
-                } else {
-                    f.delete();
-                }
-            }
-        }
-        
-        return path.delete();
-    }
-
     @Test
     public void shallCountWords() throws Exception {
         CounterJob cj = new CounterJob();

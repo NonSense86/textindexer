@@ -1,10 +1,15 @@
 package at.tuwien.ir.textindexer.utils;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.tools.ant.filters.StringInputStream;
+
 import at.tuwien.ir.textindexer.common.Constants;
+import at.tuwien.ir.textindexer.stemming.Stemmer;
 
 /**
  * Offers some utility methods to help other tasks.
@@ -52,6 +57,24 @@ public final class Utilities {
     }
 
     /**
+     * Removes punctuation, trailing and heading spaces and stems if the flag
+     * stem is set to true.
+     * 
+     * @param word
+     * @param stem
+     * @return
+     */
+    public static String preprocess(String word, boolean stem) {
+        String result = Utilities.removePunctuation(word);
+
+        if (stem) {
+            result = Utilities.stem(result);
+        }
+
+        return result;
+    }
+
+    /**
      * Removes certain characters and trailing and heading spaces of words.
      * 
      * @param word
@@ -85,6 +108,18 @@ public final class Utilities {
         }
 
         return word;
+    }
+
+    private static String stem(String word) {
+        final Stemmer pStemmer = new Stemmer();
+
+        for (int i = 0; i < word.length(); i++) {
+            pStemmer.add(word.charAt(i));
+        }
+
+        pStemmer.stem();
+        return pStemmer.toString();
+
     }
 
     private Utilities() {

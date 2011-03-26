@@ -14,6 +14,7 @@ import org.apache.hadoop.mapred.Reporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.tuwien.ir.textindexer.common.Constants;
 import at.tuwien.ir.textindexer.utils.IndexCount;
 import at.tuwien.ir.textindexer.utils.Utilities;
 
@@ -31,9 +32,12 @@ public class IndexMapper extends MapReduceBase implements Mapper<LongWritable, T
     private Text word = new Text();
 
     private String inputFile;
+    
+    private boolean stem;
 
     // it is called by the framework everytime the file changes....
     public void configure(JobConf conf) {
+        this.stem = new Boolean(conf.get(Constants.STEMMING));
         File f = new File(conf.get("map.input.file"));
         this.inputFile = f.getParentFile().getName() + File.separator + f.getName();
     }
@@ -45,12 +49,14 @@ public class IndexMapper extends MapReduceBase implements Mapper<LongWritable, T
         StringTokenizer tokenizer = new StringTokenizer(line);
 
         while (tokenizer.hasMoreTokens()) {
-            String token = Utilities.removePunctuation(tokenizer.nextToken().toLowerCase());
+            String token = Utilities.preprocess(tokenizer.nextToken().toLowerCase(), this.stem);
 
-            // after removing punctuation it may be that a tokeb becomes two or
+            // after removing punctuation it may be that a token becomes two or
             // more tokens
             // so further splitting is necessary...
             // if not just proceed...
+            // Punctuatuon is already removed and the string shall be stemmed (if setup)
+            // so no further preprocessing is needed.
             if (token.contains(" ")) {
                 StringTokenizer tknzr = new StringTokenizer(token);
                 while (tknzr.hasMoreTokens()) {
