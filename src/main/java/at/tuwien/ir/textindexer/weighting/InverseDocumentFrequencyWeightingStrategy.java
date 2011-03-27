@@ -11,5 +11,10 @@ public class InverseDocumentFrequencyWeightingStrategy extends AbstractWeighting
         
     }
 
+    public float calcWeight(String word, String docname) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
 
 }

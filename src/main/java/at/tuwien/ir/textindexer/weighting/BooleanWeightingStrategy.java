@@ -16,5 +16,11 @@ public class BooleanWeightingStrategy extends AbstractWeightingStrategy {
         
     }
 
+    public float calcWeight(String word, String docname) {
+        return 0;
+    }
+    
+    
+
 
 }
