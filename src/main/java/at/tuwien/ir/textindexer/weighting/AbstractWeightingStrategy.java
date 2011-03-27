@@ -59,12 +59,12 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 	private FastVector createClassAttribute(Set<String> classnames) {
 		FastVector fv = new FastVector();
 		for(String s : classnames) {
-		    System.out.println(s);
 		    fv.addElement(s);
 		}
 		return fv;
 	}
 	
+	//TODO fix... 
 	private Instances createDataSet(FastVector featureVector) {
 		Instances data = new Instances("MyInstances", featureVector, 0);
 		Map<String, IndexCount> input = collector.getOutputMap();
@@ -82,7 +82,7 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 					actualClass = classAndFile[0];
 					instance =createInstance(word, classAndFile[0]);
 				}
-				//instance.setValue(new Attribute(classAndFile[1], (FastVector)null), calcWeight(word, classAndFile[1]));
+				instance.setValue(new Attribute(classAndFile[1], (FastVector)null), calcWeight(word, classAndFile[1]));
 				int pos = 2 + docs.indexOf(classAndFile[1]) ; // TODO
 				instance.setValue((Attribute)featureVector.elementAt(pos), calcWeight(word, classAndFile[1]));
 			}
