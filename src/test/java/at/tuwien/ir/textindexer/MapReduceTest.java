@@ -11,7 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import at.tuwien.ir.textindexer.common.Constants;
-import at.tuwien.ir.textindexer.mapred.CounterJob;
+import at.tuwien.ir.textindexer.mapred.AggregatorJob;
+import at.tuwien.ir.textindexer.mapred.IndexingJob;
+import at.tuwien.ir.textindexer.mapred.MapRedJob;
 import at.tuwien.ir.textindexer.utils.ConfigUtils;
 import at.tuwien.ir.textindexer.utils.IndexCount;
 import at.tuwien.ir.textindexer.utils.IndexOutputCollector;
@@ -22,12 +24,14 @@ public class MapReduceTest {
 
     @Before
     public void setup() {
-        TestUtilities.deleteFolder(new File(Constants.TMP_OUTPUT_PATH));
+        TestUtilities.deleteFolder(new File(Constants.TMP_OUTPUT_PATH+"_indexing"));
+        TestUtilities.deleteFolder(new File(Constants.TMP_OUTPUT_PATH+"_wcounting"));
     }
     
     @After
     public void teardown() {
-        TestUtilities.deleteFolder(new File(Constants.TMP_OUTPUT_PATH));
+        TestUtilities.deleteFolder(new File(Constants.TMP_OUTPUT_PATH+"_indexing"));
+        TestUtilities.deleteFolder(new File(Constants.TMP_OUTPUT_PATH+"_wcounting"));
         IndexOutputCollector.getInstance().getOutputMap().clear();
     }
     
@@ -35,8 +39,9 @@ public class MapReduceTest {
     public void shallCountWords() throws Exception {
         String defaultConf = null;
         ConfigUtils.loadConfig(defaultConf);
-        CounterJob cj = new CounterJob();
-        cj.doJob("src/test/resources/test");
+        MapRedJob indexing = new IndexingJob("src/test/resources/test");
+        indexing.run();
+        
         Map<String, IndexCount> map = IndexOutputCollector.getInstance().getOutputMap();
         Assert.assertEquals(6, map.size());
         Assert.assertTrue(map.containsKey("hello"));

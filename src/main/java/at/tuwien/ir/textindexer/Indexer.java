@@ -1,6 +1,6 @@
 package at.tuwien.ir.textindexer;
 
-import at.tuwien.ir.textindexer.mapred.CounterJob;
+import at.tuwien.ir.textindexer.mapred.AggregatorJob;
 import at.tuwien.ir.textindexer.stemming.Stemmer;
 import at.tuwien.ir.textindexer.weighting.WeightingStrategy;
 
@@ -14,7 +14,7 @@ public class Indexer {
     /**
      * The MapReduce job.
      */
-    private CounterJob countJob;
+    private AggregatorJob countJob;
     
     
     /**
@@ -22,7 +22,7 @@ public class Indexer {
      * and the mapreduce job. Stemming is off per default.
      */
     public Indexer() {
-        this.countJob = new CounterJob();
+        this.countJob = new AggregatorJob();
     }
     
 

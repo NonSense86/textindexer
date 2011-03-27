@@ -54,9 +54,9 @@ public class App {
 
         Indexer idx = new Indexer();
         idx.start(dir);
-
-        ThresholdFilter filter = new ThresholdFilter();
-        filter.filter();
+        
+        ThresholdFilter tf = new ThresholdFilter();
+        tf.filter();
         
         // TODO filter and calculate weight...
         // In the end there has to be one file with all features
