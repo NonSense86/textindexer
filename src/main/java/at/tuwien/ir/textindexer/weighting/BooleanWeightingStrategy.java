@@ -21,11 +21,11 @@ public class BooleanWeightingStrategy extends AbstractWeightingStrategy {
         
     }
 
-    public float calcWeight(String word, String docname) {
+    public double calcWeight(String word, String docname) {
         Map<String, IndexCount> map = IndexOutputCollector.getInstance().getOutputMap();
         IndexCount ic = map.get(word);
         
-        return (ic.getTermFrequency().containsKey(docname)) ? 1f : 0f; 
+        return (ic.getTermFrequency().containsKey(docname)) ? 1d : 0d; 
     }
     
     

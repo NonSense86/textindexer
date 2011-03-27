@@ -1,5 +1,6 @@
 package at.tuwien.ir.textindexer.filtering;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -19,7 +20,6 @@ public class ThresholdFilter {
         float low = this.initLowFrequency();
         float high = this.initHighFrequency();
 
-        System.out.println(low + " " + high);
         if (low > high) {
             LOGGER.error("low frequency threshold is higher than the high frequency threshold, setting to 0 and 100");
             low = 0f;
@@ -76,7 +76,7 @@ public class ThresholdFilter {
         } else {
             try {
                 high = Float.parseFloat(hprop);
-                if (high < 0f || high >= 100f) {
+                if (high < 0f || high > 100f) {
                     LOGGER.warn("High threshold frequency[{}] is not valid, setting to 100", high);
                     high = 100f;
                 }

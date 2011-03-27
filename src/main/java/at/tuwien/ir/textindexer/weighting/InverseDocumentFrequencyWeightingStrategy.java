@@ -16,11 +16,12 @@ public class InverseDocumentFrequencyWeightingStrategy extends AbstractWeighting
         
     }
 
-    public float calcWeight(String word, String docname) {
+    public double calcWeight(String word, String docname) {
         Map<String, IndexCount> map = IndexOutputCollector.getInstance().getOutputMap();
         int N = IndexOutputCollector.getInstance().getInputFiles().size();
         int dfi = map.get(word).getDocFrequency();
-        int tfij = 0;
+        int tfkj = IndexOutputCollector.getInstance().getInputFiles().get(docname);
+        double tfij = 0;
         
         IndexCount ic = map.get(word);
         
@@ -28,9 +29,9 @@ public class InverseDocumentFrequencyWeightingStrategy extends AbstractWeighting
             tfij = ic.getTermFrequency().get(docname).get();
         }
         
-        //TODO ... not working yet..
+        double log = Math.log(((double) N / dfi));
+        return (tfij / tfkj) * log;
         
-        return -1f;
     }
 
 

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.FileInputFormat;
 import org.apache.hadoop.mapred.FileOutputFormat;
@@ -20,6 +21,8 @@ import org.slf4j.LoggerFactory;
 import at.tuwien.ir.textindexer.common.Constants;
 import at.tuwien.ir.textindexer.utils.ConfigUtils;
 import at.tuwien.ir.textindexer.utils.IndexCount;
+import at.tuwien.ir.textindexer.utils.IndexOutputCollector;
+import at.tuwien.ir.textindexer.utils.Utilities;
 import at.tuwien.ir.textindexer.weighting.BooleanWeightingStrategy;
 
 /**
@@ -40,18 +43,30 @@ public class CounterJob {
      * @param dir
      */
     public void doJob(String dir) {
-        JobConf conf = new JobConf(CounterJob.class);
-        conf.setJobName("wordcount");
-        conf.setOutputKeyClass(Text.class);
-        conf.setOutputValueClass(IndexCount.class);
+        JobConf indexing = new JobConf(CounterJob.class);
+        indexing.setJobName("indexing");
+        indexing.setOutputKeyClass(Text.class);
+        indexing.setOutputValueClass(IndexCount.class);
 
-        conf.setMapperClass(IndexMapper.class);
-        conf.setCombinerClass(IndexReducer.class);
-        conf.setReducerClass(IndexReducer.class);
+        indexing.setMapperClass(IndexMapper.class);
+        indexing.setCombinerClass(IndexReducer.class);
+        indexing.setReducerClass(IndexReducer.class);
 
-        conf.setInputFormat(TextInputFormat.class);
-        conf.setOutputFormat(TextOutputFormat.class);
-        conf.set(Constants.STEMMING, ConfigUtils.getProperty(Constants.STEMMING));
+        indexing.setInputFormat(TextInputFormat.class);
+        indexing.setOutputFormat(TextOutputFormat.class);
+        indexing.set(Constants.STEMMING, ConfigUtils.getProperty(Constants.STEMMING));
+        
+        JobConf counting = new JobConf(CounterJob.class);
+        counting.setJobName("counting");
+        counting.setOutputKeyClass(Text.class);
+        counting.setOutputValueClass(IntWritable.class);
+        
+        counting.setMapperClass(WordCountMapper.class);
+        counting.setCombinerClass(WordCountReducer.class);
+        counting.setReducerClass(WordCountReducer.class);
+        
+        counting.setInputFormat(TextInputFormat.class);
+        counting.setOutputFormat(TextOutputFormat.class);
         
         List<Path> p = new ArrayList<Path>();
         this.addPaths(new File(dir), p);
@@ -62,11 +77,17 @@ public class CounterJob {
 
         if (paths.length > 0) {
 
-            FileInputFormat.setInputPaths(conf, paths);
-            FileOutputFormat.setOutputPath(conf, new Path(Constants.TMP_OUTPUT_PATH));
+            FileInputFormat.setInputPaths(indexing, paths);
+            FileOutputFormat.setOutputPath(indexing, new Path(Constants.TMP_OUTPUT_PATH));
+            FileInputFormat.setInputPaths(counting, paths);
+            FileOutputFormat.setOutputPath(counting, new Path(Constants.TMP_OUTPUT_PATH));
 
             try {
-                RunningJob job = JobClient.runJob(conf);
+                JobClient.runJob(indexing);
+                Utilities.mergeOutput();
+                
+                JobClient.runJob(counting);
+                Utilities.mergeOutput();
 
             } catch (IOException e) {
                 LOGGER.error("An error occurred: {}", e.getMessage());

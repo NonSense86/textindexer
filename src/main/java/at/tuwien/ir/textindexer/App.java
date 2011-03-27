@@ -54,11 +54,6 @@ public class App {
         Indexer idx = new Indexer();
         idx.start(dir);
 
-        // won't be necessary in the end
-        Utilities.mergeOutput();
-        // System.out.println(IndexOutputCollector.getInstance().getOutputMap().size());
-
-        
         ThresholdFilter filter = new ThresholdFilter();
         filter.filter();
         

@@ -18,15 +18,15 @@ public class TermFrequencyWeightingStrategy extends AbstractWeightingStrategy {
         
     }
 
-    public float calcWeight(String word, String docname) {
+    public double calcWeight(String word, String docname) {
         Map<String, IndexCount> map = IndexOutputCollector.getInstance().getOutputMap();
         IndexCount ic = map.get(word);
         
         if (ic.getTermFrequency().containsKey(docname)) {
-            return (float) ic.getTermFrequency().get(docname).get();
+            return (double) ic.getTermFrequency().get(docname).get();
         }
         
-        return 0f;
+        return 0d;
     }
 
 

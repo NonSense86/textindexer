@@ -21,5 +21,5 @@ public interface WeightingStrategy {
      * @param docname
      * @return
      */
-    public float calcWeight(String word, String docname);
+    public double calcWeight(String word, String docname);
 }

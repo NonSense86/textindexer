@@ -1,8 +1,7 @@
 package at.tuwien.ir.textindexer.utils;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -16,7 +15,7 @@ public class IndexOutputCollector {
     
     private Map<String, IndexCount> outputMap;
     
-    private Set<String> inputFiles;
+    private Map<String, Integer> inputFiles;
     
     public static synchronized IndexOutputCollector getInstance() {
         if (IndexOutputCollector.uniqueInstance == null) {
@@ -47,13 +46,13 @@ public class IndexOutputCollector {
         return outputMap;
     }
 
-    public Set<String> getInputFiles() {
+    public Map<String, Integer> getInputFiles() {
         return inputFiles;
     }
 
     private IndexOutputCollector() {
         this.outputMap = new ConcurrentHashMap<String, IndexCount>();
-        this.inputFiles = new HashSet<String>();
+        this.inputFiles = new HashMap<String, Integer>();
     }
 
 }
