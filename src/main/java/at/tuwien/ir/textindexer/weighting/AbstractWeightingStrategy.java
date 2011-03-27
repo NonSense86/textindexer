@@ -73,23 +73,27 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 				String[] classAndFile = doc.toString().split(File.separator);
 				if(actualClass == null) {
 					actualClass = classAndFile[0];
-					instance = createInstance(word, doc.toString());
+					instance = createInstance(word, classAndFile[1]);
 				}
 				else if(!actualClass.equals(classAndFile[0])) {
 					actualClass = classAndFile[0];
-					instance =createInstance(word, doc.toString());
+					instance =createInstance(word, classAndFile[1]);
 				}
-				instance.setValue(new Attribute(classAndFile[1], (FastVector)null), calcWeight(word, classAndFile[1]));
+				//instance.setValue(new Attribute(classAndFile[1], (FastVector)null), calcWeight(word, classAndFile[1]));
+				int pos = 0; // TODO
+				instance.setValue((Attribute)featureVector.elementAt(pos), calcWeight(word, classAndFile[1]));
 			}
 			data.add(new SparseInstance(instance));
 		}			
 		return data;
 	}
 	
-	private Instance createInstance(String word, String doc) {
+	private Instance createInstance(String word, String clas) {
 		Instance instance = new Instance(featureVector.size());
-		instance.setValue(new Attribute("word", (FastVector)null), word);
-		instance.setValue(new Attribute("class", (FastVector)null), doc.split(File.separator)[0]);
+		instance.setValue((Attribute)featureVector.elementAt(0), word);
+		instance.setValue((Attribute)featureVector.elementAt(1), clas);
+		//instance.setValue(new Attribute("word", (FastVector)null), word);
+		//instance.setValue(new Attribute("class", (FastVector)null), doc.split(File.separator)[0]);
 		return instance;
 	}
 	
