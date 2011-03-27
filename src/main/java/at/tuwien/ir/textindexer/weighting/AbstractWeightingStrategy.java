@@ -40,7 +40,7 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 		
 		String[] splitted;
 		Set<String> classes = new HashSet<String>();
-		List<String> docs = new ArrayList<String>();
+		docs = new ArrayList<String>();
 		for(String s : IndexOutputCollector.getInstance().getInputFiles().keySet())
 		{
 			splitted = s.split(File.separator);
@@ -58,27 +58,29 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 		
 	private FastVector createClassAttribute(Set<String> classnames) {
 		FastVector fv = new FastVector();
-		for(String s : classnames)
-			fv.addElement(s);
+		for(String s : classnames) {
+		    System.out.println(s);
+		    fv.addElement(s);
+		}
 		return fv;
 	}
 	
 	private Instances createDataSet(FastVector featureVector) {
 		Instances data = new Instances("MyInstances", featureVector, 0);
 		Map<String, IndexCount> input = collector.getOutputMap();
-		String actualClass = null;
 		for(String word : input.keySet()) {
+		    String actualClass = null;
 			Instance instance = null;
 			for(Text doc : input.get(word).getTermFrequency().keySet())
 			{
 				String[] classAndFile = doc.toString().split(File.separator);
 				if(actualClass == null) {
 					actualClass = classAndFile[0];
-					instance = createInstance(word, classAndFile[1]);
+					instance = createInstance(word, classAndFile[0]);
 				}
 				else if(!actualClass.equals(classAndFile[0])) {
 					actualClass = classAndFile[0];
-					instance =createInstance(word, classAndFile[1]);
+					instance =createInstance(word, classAndFile[0]);
 				}
 				//instance.setValue(new Attribute(classAndFile[1], (FastVector)null), calcWeight(word, classAndFile[1]));
 				int pos = 2 + docs.indexOf(classAndFile[1]) ; // TODO
