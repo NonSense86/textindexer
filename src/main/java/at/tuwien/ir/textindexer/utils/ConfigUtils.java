@@ -74,7 +74,7 @@ public final class ConfigUtils {
     
     public static void loadDefaultConfig() {
         try {
-            LOGGER.debug("Loading default config file...");
+            //LOGGER.debug("Loading default config file...");
             ConfigUtils.defaultConfig = new Properties();
             final URL url = ClassLoader.getSystemResource(ConfigUtils.DEFAULT_CONFIG);
             ConfigUtils.defaultConfig.load(url.openStream());

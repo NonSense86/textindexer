@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import at.tuwien.ir.textindexer.common.Constants;
 import at.tuwien.ir.textindexer.utils.IndexCount;
+import at.tuwien.ir.textindexer.utils.IndexOutputCollector;
 import at.tuwien.ir.textindexer.utils.Utilities;
 
 /**
@@ -39,7 +40,9 @@ public class IndexMapper extends MapReduceBase implements Mapper<LongWritable, T
     public void configure(JobConf conf) {
         this.stem = new Boolean(conf.get(Constants.STEMMING));
         File f = new File(conf.get("map.input.file"));
+        
         this.inputFile = f.getParentFile().getName() + File.separator + f.getName();
+        IndexOutputCollector.getInstance().getInputFiles().add(this.inputFile);
     }
 
     public void map(LongWritable key, Text value, OutputCollector<Text, IndexCount> output, Reporter reporter)

@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.tuwien.ir.textindexer.common.Constants;
+import at.tuwien.ir.textindexer.filtering.ThresholdFilter;
 import at.tuwien.ir.textindexer.utils.ConfigUtils;
 import at.tuwien.ir.textindexer.utils.Utilities;
 import at.tuwien.ir.textindexer.weighting.BooleanWeightingStrategy;
@@ -35,7 +36,7 @@ public class App {
 
         String dir = null;
         if (args.length > 1) {
-            App.LOGGER.info("Starting application with specific configuration");
+            App.LOGGER.info("Starting application with specific configuration: {}", args[0]);
             ConfigUtils.loadConfig(args[0]);
             dir = args[1];
         } else if (args.length == 1) {
@@ -57,6 +58,10 @@ public class App {
         Utilities.mergeOutput();
         // System.out.println(IndexOutputCollector.getInstance().getOutputMap().size());
 
+        
+        ThresholdFilter filter = new ThresholdFilter();
+        filter.filter();
+        
         // TODO filter and calculate weight...
         // In the end there has to be one file with all features
         // and two files with filtered features.

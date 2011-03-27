@@ -1,9 +1,9 @@
 package at.tuwien.ir.textindexer.utils;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A singleton that collects the results of the map reduce procedure.
@@ -52,7 +52,7 @@ public class IndexOutputCollector {
     }
 
     private IndexOutputCollector() {
-        this.outputMap = new HashMap<String, IndexCount>();
+        this.outputMap = new ConcurrentHashMap<String, IndexCount>();
         this.inputFiles = new HashSet<String>();
     }
 
