@@ -25,28 +25,28 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 		
 	}
 	
-	/*
-	private FastVector<Attribute> createFeatureVector(Map<String, IndexCount> input) {
-		FastVector<Attribute> fv = new FastVector<Attribute>();
+	
+	private FastVector createFeatureVector(Map<String, IndexCount> input) {
+		FastVector fv = new FastVector();
 		Attribute word = new Attribute("word", (FastVector)null);
-		fv.add(word);
+		fv.addElement(word);
 		
 		List<String> classes = null;
-		fv.add(new Attribute("class", createClassAttribute(classes)));
+		fv.addElement(new Attribute("class", createClassAttribute(classes)));
 		
 		List<String> docs = null;
 		for(String s : docs) {
-			fv.add(new Attribute(s, (FastVector)null));
+			fv.addElement(new Attribute(s, (FastVector)null));
 		}
 		return fv;
 		
 	}
-	*/
 	
-	private List<String> createClassAttribute(List<String> classnames) {
-		List<String> fv = new ArrayList<String>();
+	
+	private FastVector createClassAttribute(List<String> classnames) {
+		FastVector fv = new FastVector();
 		for(String s : classnames)
-			fv.add(s);
+			fv.addElement(s);
 		return fv;
 	}
 	
