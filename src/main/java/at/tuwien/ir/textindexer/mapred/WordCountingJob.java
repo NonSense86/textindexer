@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.tuwien.ir.textindexer.common.Constants;
+import at.tuwien.ir.textindexer.utils.Utilities;
 
 public class WordCountingJob extends MapRedJob {
     
@@ -25,13 +26,17 @@ public class WordCountingJob extends MapRedJob {
     
     private String dir;
     
+    private static final String SUFFIX = "_wcounting";
+    
     public WordCountingJob(String dir) {
         this.dir = dir;
     }
     
     public void run() {
         try {
+            LOGGER.info("Starting wordcount map reduce job");
             JobClient.runJob(this.getJob(this.dir));
+            Utilities.mergeOutput(SUFFIX);
         } catch (IOException e) {
             LOGGER.error("An Error occurred: {} ", e.getMessage());
         }
@@ -61,7 +66,7 @@ public class WordCountingJob extends MapRedJob {
         if (paths.length > 0) {
 
             FileInputFormat.setInputPaths(counting, paths);
-            FileOutputFormat.setOutputPath(counting, new Path(Constants.TMP_OUTPUT_PATH));
+            FileOutputFormat.setOutputPath(counting, new Path(Constants.TMP_OUTPUT_PATH + SUFFIX));
 
             return counting;
         } else {

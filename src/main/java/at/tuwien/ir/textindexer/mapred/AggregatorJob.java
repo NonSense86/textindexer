@@ -47,13 +47,9 @@ public class AggregatorJob {
         try {
             Thread i = new Thread(index);
             Thread c = new Thread(counting);
-            System.out.println("start i");
             i.start();
-            i.join();
-            System.out.println("start c");
             c.start();
             c.join();
-            System.out.println("end");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

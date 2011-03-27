@@ -24,8 +24,8 @@ public final class Utilities {
      * folder. This allows a subsequent map reduce procedure without deleting
      * the results of the previous.
      */
-    public static void mergeOutput() {
-        final File tmp = new File(Constants.TMP_OUTPUT_PATH);
+    public static void mergeOutput(String suffix) {
+        final File tmp = new File(Constants.TMP_OUTPUT_PATH + suffix);
         final File finalOutputDir = new File(ConfigUtils.getProperty(Constants.OUTPUT_PATH));
         final SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd_HHmmss");
 
@@ -38,7 +38,7 @@ public final class Utilities {
                 if (f.getName().startsWith(".")) {
                     f.delete();
                 } else {
-                    f.renameTo(new File(finalOutputDir, "results_" + df.format(new Date()) + ".txt"));
+                    f.renameTo(new File(finalOutputDir, "results_" + suffix + "_" + df.format(new Date()) + ".txt"));
                 }
             }
 

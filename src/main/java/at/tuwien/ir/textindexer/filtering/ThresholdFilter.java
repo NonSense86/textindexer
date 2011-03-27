@@ -17,13 +17,23 @@ public class ThresholdFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ThresholdFilter.class);
 
     public void filter() {
+        try {
+            //waiting for the mapreduce job threads to finish clean...
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
+        LOGGER.info("Start filtering");
         float low = this.initLowFrequency();
         float high = this.initHighFrequency();
 
         if (low > high) {
-            LOGGER.error("low frequency threshold is higher than the high frequency threshold, setting to 0 and 100");
-            low = 0f;
-            high = 100f;
+            LOGGER.error("low frequency threshold is higher than the high frequency threshold, skip filtering....");
+            return;
+        } else if (low == 0f && high == 100f) {
+            LOGGER.info("Thresholds won't filter anything, skip filtering procedure");
+            return;
         }
         
         Map<String, IndexCount> map = IndexOutputCollector.getInstance().getOutputMap();
