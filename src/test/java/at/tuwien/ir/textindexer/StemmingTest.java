@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import at.tuwien.ir.textindexer.common.Constants;
-import at.tuwien.ir.textindexer.mapred.CounterJob;
+import at.tuwien.ir.textindexer.mapred.AggregatorJob;
 import at.tuwien.ir.textindexer.utils.ConfigUtils;
 import at.tuwien.ir.textindexer.utils.IndexCount;
 import at.tuwien.ir.textindexer.utils.IndexOutputCollector;
@@ -32,7 +32,7 @@ public class StemmingTest {
     @Test
     public void shallStem() throws Exception {
         ConfigUtils.loadConfig(new File("src/test/resources/test_config.properties"));
-        CounterJob cj = new CounterJob();
+        AggregatorJob cj = new AggregatorJob();
         cj.doJob("src/test/resources/testStem/");
         
         Map<String, IndexCount> map = IndexOutputCollector.getInstance().getOutputMap();
