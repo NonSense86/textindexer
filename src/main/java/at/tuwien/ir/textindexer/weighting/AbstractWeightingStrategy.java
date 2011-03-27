@@ -24,8 +24,10 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 	
 	private FastVector featureVector;
 	
-	public void generateOutput(String dir) {
+	public void generateOutput(String dir) throws IOException {
 		featureVector = createFeatureVector();
+		Instances dataSet = createDataSet(featureVector);
+		writeOutput(dataSet, dir + File.separator + filePrefix + "output.arff");
 	}
 			
 	private FastVector createFeatureVector() {
@@ -36,7 +38,7 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 		String[] splitted;
 		List<String> classes = new ArrayList<String>();
 		List<String> docs = new ArrayList<String>();
-		for(String s : IndexOutputCollector.getInstance().getInputFiles())
+		for(String s : IndexOutputCollector.getInstance().getInputFiles().keySet())
 		{
 			splitted = s.split(File.separator);
 			classes.add(splitted[0]);

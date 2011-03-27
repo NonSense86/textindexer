@@ -1,5 +1,6 @@
 package at.tuwien.ir.textindexer;
 
+import java.io.IOException;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -74,7 +75,12 @@ public class App {
         }
 
         OutputGenerator generator = new OutputGenerator(ws);
-        generator.generateOutput(ConfigUtils.getProperty(Constants.OUTPUT_PATH));
+        try {
+			generator.generateOutput(ConfigUtils.getProperty(Constants.OUTPUT_PATH));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
         App.LOGGER.info("Terminating at: {}", new Date());
     }

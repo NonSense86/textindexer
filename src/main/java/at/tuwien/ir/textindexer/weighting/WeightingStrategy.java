@@ -1,5 +1,7 @@
 package at.tuwien.ir.textindexer.weighting;
 
+import java.io.IOException;
+
 import at.tuwien.ir.textindexer.utils.IndexOutputCollector;
 
 /**
@@ -11,7 +13,7 @@ import at.tuwien.ir.textindexer.utils.IndexOutputCollector;
  */
 public interface WeightingStrategy {
 
-    public void generateOutput(String dir);
+    public void generateOutput(String dir) throws IOException;
     
     /**
      * calculates the weight for the passed word

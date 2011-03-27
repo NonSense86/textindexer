@@ -1,5 +1,7 @@
 package at.tuwien.ir.textindexer;
 
+import java.io.IOException;
+
 import at.tuwien.ir.textindexer.weighting.WeightingStrategy;
 
 public class OutputGenerator {
@@ -18,7 +20,7 @@ public class OutputGenerator {
         return strategy;
     }
     
-    public void generateOutput(String dir) {
+    public void generateOutput(String dir) throws IOException {
         this.strategy.generateOutput(dir);
     }
 }
