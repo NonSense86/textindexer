@@ -1,7 +1,11 @@
 package at.tuwien.ir.textindexer.weighting;
 
-public class InverseDocumentFrequencyWeightingStrategy implements WeightingStrategy {
+public class InverseDocumentFrequencyWeightingStrategy extends AbstractWeightingStrategy {
 
+	public InverseDocumentFrequencyWeightingStrategy() {
+		filePrefix = "idfw";
+	}
+	
     public void generateOutput(String dir) {
         // TODO Auto-generated method stub
         
