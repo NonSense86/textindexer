@@ -25,6 +25,7 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 	protected IndexOutputCollector collector = IndexOutputCollector.getInstance();
 	
 	private FastVector featureVector;
+	private List<String> docs;
 	
 	public void generateOutput(String dir) throws IOException {
 		featureVector = createFeatureVector();
@@ -80,7 +81,7 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 					instance =createInstance(word, classAndFile[1]);
 				}
 				//instance.setValue(new Attribute(classAndFile[1], (FastVector)null), calcWeight(word, classAndFile[1]));
-				int pos = 0; // TODO
+				int pos = 2 + docs.indexOf(classAndFile[1]) ; // TODO
 				instance.setValue((Attribute)featureVector.elementAt(pos), calcWeight(word, classAndFile[1]));
 			}
 			data.add(new SparseInstance(instance));
