@@ -13,11 +13,6 @@ public class TermFrequencyWeightingStrategy extends AbstractWeightingStrategy {
 		filePrefix = "tfw";
 	}
 	
-    public void generateOutput(String dir) {
-        // TODO Auto-generated method stub
-        
-    }
-
     public double calcWeight(String word, String docname) {
         Map<String, IndexCount> map = IndexOutputCollector.getInstance().getOutputMap();
         IndexCount ic = map.get(word);

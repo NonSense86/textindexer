@@ -3,8 +3,10 @@ package at.tuwien.ir.textindexer.weighting;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.hadoop.io.Text;
 
@@ -20,7 +22,7 @@ import at.tuwien.ir.textindexer.utils.IndexOutputCollector;
 abstract class AbstractWeightingStrategy implements WeightingStrategy {
 
 	protected String filePrefix;
-	protected IndexOutputCollector collector;
+	protected IndexOutputCollector collector = IndexOutputCollector.getInstance();
 	
 	private FastVector featureVector;
 	
@@ -36,7 +38,7 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 		fv.addElement(word);
 		
 		String[] splitted;
-		List<String> classes = new ArrayList<String>();
+		Set<String> classes = new HashSet<String>();
 		List<String> docs = new ArrayList<String>();
 		for(String s : IndexOutputCollector.getInstance().getInputFiles().keySet())
 		{
@@ -53,7 +55,7 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 		return fv;
 	}
 		
-	private FastVector createClassAttribute(List<String> classnames) {
+	private FastVector createClassAttribute(Set<String> classnames) {
 		FastVector fv = new FastVector();
 		for(String s : classnames)
 			fv.addElement(s);

@@ -67,10 +67,13 @@ public class App {
         WeightingStrategy ws;
         if (weightingType.equals("tf")) {
             ws = new TermFrequencyWeightingStrategy();
+            LOGGER.info("Selecting [{}] weighting strategy", "Term Frequency");
         } else if (weightingType.equals("idf")) {
             ws = new InverseDocumentFrequencyWeightingStrategy();
+            LOGGER.info("Selecting [{}] weighting strategy", "Inverse Document Frequency");
         } else {
             // no matter what else is set.. load the default...
+            LOGGER.info("Selecting [{}] weighting strategy", "Boolean");
             ws = new BooleanWeightingStrategy();
         }
 

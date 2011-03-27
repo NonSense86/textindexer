@@ -11,11 +11,6 @@ public class InverseDocumentFrequencyWeightingStrategy extends AbstractWeighting
 		filePrefix = "idfw";
 	}
 	
-    public void generateOutput(String dir) {
-        // TODO Auto-generated method stub
-        
-    }
-
     public double calcWeight(String word, String docname) {
         Map<String, IndexCount> map = IndexOutputCollector.getInstance().getOutputMap();
         int N = IndexOutputCollector.getInstance().getInputFiles().size();
