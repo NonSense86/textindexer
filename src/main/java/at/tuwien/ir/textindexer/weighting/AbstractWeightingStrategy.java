@@ -12,6 +12,7 @@ import java.util.TreeSet;
 import org.apache.hadoop.io.Text;
 
 import weka.core.Attribute;
+import weka.core.DenseInstance;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -73,7 +74,7 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 		Map<String, IndexCount> input = collector.getOutputMap();
 		for(String word : input.keySet()) {
 		    String actualClass = null;
-			SparseInstance instance = null;
+			Instance instance = null;
 			sortedDocs = textSet2StringTreeSet(input.get(word).getTermFrequency().keySet());
 			for(String doc : sortedDocs)
 			{
@@ -83,23 +84,22 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 					instance = createInstance(word, classAndFile[0]);
 				}
 				else if(!actualClass.equals(classAndFile[0])) {
-					actualClass = classAndFile[0];
+				    data.add(instance);
+				    actualClass = classAndFile[0];
 					instance =createInstance(word, classAndFile[0]);
 				}
-				instance.setValue(new Attribute(classAndFile[1], (FastVector)null), calcWeight(word, classAndFile[1]));
+//				instance.setValue(new Attribute(classAndFile[1], (FastVector)null), calcWeight(word, classAndFile[1]));
 				int pos = 2 + docs.indexOf(classAndFile[1]) ; // TODO
-				instance.setValue((Attribute)featureVector.elementAt(pos), calcWeight(word, classAndFile[1]));
+				instance.setValue((Attribute)featureVector.elementAt(pos), calcWeight(word, doc));
 			}
 			data.add(instance);
 		}			
 		return data;
 	}
 	
-	private SparseInstance createInstance(String word, String clas) {
-		if(nullInstance == null) 
-			nullInstance = initNullInstance(featureVector.size());
-			
-		SparseInstance instance = new SparseInstance(nullInstance);
+	private Instance createInstance(String word, String clas) {
+		Instance instance = new DenseInstance(featureVector.size());
+		
 		instance.setValue((Attribute)featureVector.elementAt(0), word);
 		instance.setValue((Attribute)featureVector.elementAt(1), clas);
 		
@@ -108,15 +108,15 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 		return instance;
 	}
 		
-	private Instance initNullInstance(int size) {
-		Instance instance = new Instance(size);
-		instance.setValue((Attribute)featureVector.elementAt(0), "null");
-		instance.setValue((Attribute)featureVector.elementAt(1), "null");
-		for(int i = 2; i < size; i++)
-			instance.setValue((Attribute)featureVector.elementAt(1), 0);
-		return instance;
-	}
-	
+//	private Instance initNullInstance(int size) {
+//		Instance instance = new DenseInstance(size);
+//		instance.setValue((Attribute)featureVector.elementAt(0), "null");
+//		instance.setValue((Attribute)featureVector.elementAt(1), "null");
+//		for(int i = 2; i < size; i++)
+//			instance.setValue((Attribute)featureVector.elementAt(1), 0);
+//		return instance;
+//	}
+//	
 	private TreeSet<String> textSet2StringTreeSet(Set<Text> input) {
 		TreeSet<String> result = new TreeSet<String>();
 		for(Text t : input)

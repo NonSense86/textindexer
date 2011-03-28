@@ -2,6 +2,7 @@ package at.tuwien.ir.textindexer.weighting;
 
 import java.util.Map;
 
+import org.apache.hadoop.io.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +21,7 @@ public class BooleanWeightingStrategy extends AbstractWeightingStrategy {
         Map<String, IndexCount> map = IndexOutputCollector.getInstance().getOutputMap();
         IndexCount ic = map.get(word);
         
-        return (ic.getTermFrequency().containsKey(docname)) ? 1d : 0d; 
+        return (ic.getTermFrequency().containsKey(new Text(docname))) ? 1d : 0d; 
     }
     
     

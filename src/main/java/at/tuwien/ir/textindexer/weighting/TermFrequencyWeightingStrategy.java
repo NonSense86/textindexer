@@ -2,7 +2,7 @@ package at.tuwien.ir.textindexer.weighting;
 
 import java.util.Map;
 
-import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
 
 import at.tuwien.ir.textindexer.utils.IndexCount;
 import at.tuwien.ir.textindexer.utils.IndexOutputCollector;
@@ -17,8 +17,9 @@ public class TermFrequencyWeightingStrategy extends AbstractWeightingStrategy {
         Map<String, IndexCount> map = IndexOutputCollector.getInstance().getOutputMap();
         IndexCount ic = map.get(word);
         
-        if (ic.getTermFrequency().containsKey(docname)) {
-            return (double) ic.getTermFrequency().get(docname).get();
+        Text key = new Text(docname);
+        if (ic.getTermFrequency().containsKey(key)) {
+            return (double) ic.getTermFrequency().get(key).get();
         }
         
         return 0d;
