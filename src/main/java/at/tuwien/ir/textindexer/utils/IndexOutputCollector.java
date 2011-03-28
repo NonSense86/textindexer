@@ -31,15 +31,11 @@ public class IndexOutputCollector {
     }
     
     public synchronized void addResult(String doc, IndexCount count) {
-//        if (ic == null) {
-//            IndexCount c = new IndexCount();
-//            c.setTermFrequency(count.getTermFrequency());
             this.outputMap.put(doc, count);
-//        } else {
-//            for (Text t : count.getTermFrequency().keySet()) {
-//                ic.incrTermFrequency(t.toString(), count.getTermFrequency().get(t).get());
-//            }
-//        }
+    }
+    
+    public synchronized void addDoc(String doc, Integer i) {
+        this.inputFiles.put(doc, i);
     }
     
     public synchronized Map<String, IndexCount> getOutputMap() {

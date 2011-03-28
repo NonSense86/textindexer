@@ -48,7 +48,7 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 		{
 			splitted = s.split(File.separator);
 			classes.add(splitted[0]);
-			docs.add(splitted[1]);
+			docs.add(s);
 		}
 				
 		fv.addElement(new Attribute("class", createClassAttribute(classes)));
@@ -67,7 +67,6 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 		return fv;
 	}
 	
-	//TODO fix... 
 	private Instances createDataSet(FastVector featureVector) {
 		Instances data = new Instances("MyInstances", featureVector, 0);
 		TreeSet<String> sortedDocs;
@@ -88,8 +87,8 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 				    actualClass = classAndFile[0];
 					instance =createInstance(word, classAndFile[0]);
 				}
-//				instance.setValue(new Attribute(classAndFile[1], (FastVector)null), calcWeight(word, classAndFile[1]));
-				int pos = 2 + docs.indexOf(classAndFile[1]) ; // TODO
+
+				int pos = 2 + docs.indexOf(doc);
 				instance.setValue((Attribute)featureVector.elementAt(pos), calcWeight(word, doc));
 			}
 			data.add(instance);
@@ -103,20 +102,9 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 		instance.setValue((Attribute)featureVector.elementAt(0), word);
 		instance.setValue((Attribute)featureVector.elementAt(1), clas);
 		
-		//instance.setValue(new Attribute("word", (FastVector)null), word);
-		//instance.setValue(new Attribute("class", (FastVector)null), doc.split(File.separator)[0]);
 		return instance;
 	}
 		
-//	private Instance initNullInstance(int size) {
-//		Instance instance = new DenseInstance(size);
-//		instance.setValue((Attribute)featureVector.elementAt(0), "null");
-//		instance.setValue((Attribute)featureVector.elementAt(1), "null");
-//		for(int i = 2; i < size; i++)
-//			instance.setValue((Attribute)featureVector.elementAt(1), 0);
-//		return instance;
-//	}
-//	
 	private TreeSet<String> textSet2StringTreeSet(Set<Text> input) {
 		TreeSet<String> result = new TreeSet<String>();
 		for(Text t : input)

@@ -21,10 +21,9 @@ public class WordCountReducer extends MapReduceBase implements Reducer<Text, Int
         while (values.hasNext()) {
             sum += values.next().get();
         }
-        
-        IndexOutputCollector.getInstance().getInputFiles().put(key.toString(), new Integer(sum));
+
+        IndexOutputCollector.getInstance().addDoc(key.toString(), new Integer(sum));
         output.collect(key, new IntWritable(sum));
-        
     }
 
 }

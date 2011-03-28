@@ -49,7 +49,7 @@ public class AggregatorJob {
             Thread c = new Thread(counting);
             i.start();
             c.start();
-            c.join();
+            i.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

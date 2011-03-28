@@ -25,7 +25,6 @@ public class WordCountMapper extends MapReduceBase implements Mapper<LongWritabl
         File f = new File(conf.get("map.input.file"));
         String name = f.getParentFile().getName() + File.separator + f.getName();
         word.set(name);
-        IndexOutputCollector.getInstance().getInputFiles().put(name, null);
     }
     
     public void map(LongWritable key, Text value, OutputCollector<Text, IntWritable> output, Reporter reporter)

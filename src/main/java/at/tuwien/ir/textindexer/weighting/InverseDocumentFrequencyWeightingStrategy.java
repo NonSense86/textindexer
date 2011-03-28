@@ -18,9 +18,7 @@ public class InverseDocumentFrequencyWeightingStrategy extends AbstractWeighting
         Map<String, IndexCount> map = IndexOutputCollector.getInstance().getOutputMap();
         int N = IndexOutputCollector.getInstance().getInputFiles().size();
         int dfi = map.get(word).getDocFrequency();
-        System.out.println(word + " " + docname);
-        Map<String, Integer> files = IndexOutputCollector.getInstance().getInputFiles();
-        int tfkj =files.get(docname);
+        int tfkj =IndexOutputCollector.getInstance().getInputFiles().get(docname);
         double tfij = 0;
         
         IndexCount ic = map.get(word);

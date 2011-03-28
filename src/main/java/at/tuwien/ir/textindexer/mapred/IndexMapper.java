@@ -40,9 +40,8 @@ public class IndexMapper extends MapReduceBase implements Mapper<LongWritable, T
     public void configure(JobConf conf) {
         this.stem = new Boolean(conf.get(Constants.STEMMING));
         File f = new File(conf.get("map.input.file"));
-        
         this.inputFile = f.getParentFile().getName() + File.separator + f.getName();
-        IndexOutputCollector.getInstance().getInputFiles().put(this.inputFile, null);
+        LOGGER.debug("working on: " + this.inputFile);
     }
 
     public void map(LongWritable key, Text value, OutputCollector<Text, IndexCount> output, Reporter reporter)
