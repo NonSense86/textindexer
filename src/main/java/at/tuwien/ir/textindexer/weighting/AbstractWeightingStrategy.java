@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.hadoop.io.Text;
 
@@ -26,7 +27,8 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 	
 	private FastVector featureVector;
 	private List<String> docs;
-	
+	private Instance nullInstance;
+		
 	public void generateOutput(String dir) throws IOException {
 		featureVector = createFeatureVector();
 		Instances dataSet = createDataSet(featureVector);
@@ -67,13 +69,15 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 	//TODO fix... 
 	private Instances createDataSet(FastVector featureVector) {
 		Instances data = new Instances("MyInstances", featureVector, 0);
+		TreeSet<String> sortedDocs;
 		Map<String, IndexCount> input = collector.getOutputMap();
 		for(String word : input.keySet()) {
 		    String actualClass = null;
-			Instance instance = null;
-			for(Text doc : input.get(word).getTermFrequency().keySet())
+			SparseInstance instance = null;
+			sortedDocs = textSet2StringTreeSet(input.get(word).getTermFrequency().keySet());
+			for(String doc : sortedDocs)
 			{
-				String[] classAndFile = doc.toString().split(File.separator);
+				String[] classAndFile = doc.split(File.separator);
 				if(actualClass == null) {
 					actualClass = classAndFile[0];
 					instance = createInstance(word, classAndFile[0]);
@@ -86,18 +90,38 @@ abstract class AbstractWeightingStrategy implements WeightingStrategy {
 				int pos = 2 + docs.indexOf(classAndFile[1]) ; // TODO
 				instance.setValue((Attribute)featureVector.elementAt(pos), calcWeight(word, classAndFile[1]));
 			}
-			data.add(new SparseInstance(instance));
+			data.add(instance);
 		}			
 		return data;
 	}
 	
-	private Instance createInstance(String word, String clas) {
-		Instance instance = new Instance(featureVector.size());
+	private SparseInstance createInstance(String word, String clas) {
+		if(nullInstance == null) 
+			nullInstance = initNullInstance(featureVector.size());
+			
+		SparseInstance instance = new SparseInstance(nullInstance);
 		instance.setValue((Attribute)featureVector.elementAt(0), word);
 		instance.setValue((Attribute)featureVector.elementAt(1), clas);
+		
 		//instance.setValue(new Attribute("word", (FastVector)null), word);
 		//instance.setValue(new Attribute("class", (FastVector)null), doc.split(File.separator)[0]);
 		return instance;
+	}
+		
+	private Instance initNullInstance(int size) {
+		Instance instance = new Instance(size);
+		instance.setValue((Attribute)featureVector.elementAt(0), "null");
+		instance.setValue((Attribute)featureVector.elementAt(1), "null");
+		for(int i = 2; i < size; i++)
+			instance.setValue((Attribute)featureVector.elementAt(1), 0);
+		return instance;
+	}
+	
+	private TreeSet<String> textSet2StringTreeSet(Set<Text> input) {
+		TreeSet<String> result = new TreeSet<String>();
+		for(Text t : input)
+			result.add(t.toString());
+		return result;
 	}
 	
 	private void writeOutput(Instances dataSet, String filename) throws IOException {
