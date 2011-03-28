@@ -25,8 +25,8 @@ java -Xmx1024 -jar bowindexer.jar [config_path] [collection]
 
 ### Windows
 In 2 Easy steps:
-1: Install linux
-2: go to section Unix
+- 1: Install linux
+- 2: go to section Unix
 
 In more (painful) steps:
 Because of the mapreduce jobs you will have to install cygwin and run the program in a specific environment.
@@ -36,15 +36,11 @@ http://pi3.informatik.uni-mannheim.de/downloads/hauptstudium/dbs2/hws10/Small_tu
 ## Config File
 It is a simple .properties file in the form:
 
-at.tuwien.ir.textindexer.weighting=bool
-
-at.tuwien.ir.textindexer.stemming=false
-
-at.tuwien.ir.textindexer.frequency.threshold.low=10
-
-at.tuwien.ir.textindexer.frequency.threshold.high=90
-
-at.tuwien.ir.textindexer.output.path=./output
+- at.tuwien.ir.textindexer.weighting=bool
+- at.tuwien.ir.textindexer.stemming=false
+- at.tuwien.ir.textindexer.frequency.threshold.low=10
+- at.tuwien.ir.textindexer.frequency.threshold.high=90
+- at.tuwien.ir.textindexer.output.path=./output
 
 There are three weighting options: bool, tf, idf;
 Anything else will trigger the default boolean weighting.
