@@ -1,5 +1,10 @@
 package at.tuwien.ir.textindexer.utils;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,9 +14,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author petar
  *
  */
-public class IndexOutputCollector {
+public class IndexOutputCollector implements Serializable {
 
-    private static IndexOutputCollector uniqueInstance;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private static IndexOutputCollector uniqueInstance;
     
     private Map<String, IndexCount> outputMap;
     
@@ -49,6 +59,26 @@ public class IndexOutputCollector {
     private IndexOutputCollector() {
         this.outputMap = new ConcurrentHashMap<String, IndexCount>();
         this.inputFiles = new HashMap<String, Integer>();
+    }
+    
+    public static void serialize(IndexOutputCollector collector) {
+    	try {
+    		FileOutputStream fout = new FileOutputStream("collection.dat");
+    	    ObjectOutputStream oos = new ObjectOutputStream(fout);
+    	    oos.writeObject(collector);
+    	    oos.close();
+    	} catch (Exception e) { e.printStackTrace(); }    	
+    }
+    
+    public static IndexOutputCollector deserialize() {
+    	IndexOutputCollector col = new IndexOutputCollector();
+    	try {
+    		FileInputStream fin = new FileInputStream("collection.dat");
+    	    ObjectInputStream ois = new ObjectInputStream(fin);
+    	    col = (IndexOutputCollector) ois.readObject();
+    	    ois.close();
+    	} catch (Exception e) {e.printStackTrace(); }
+    	return col;
     }
 
 }
